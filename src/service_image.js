@@ -1,28 +1,21 @@
 import axios from 'axios';
 
 const API_KEY = '31748573-756ae01a8464a1c082026e61b';
-const BASE_URL = 'https://pixabay.com/api';
+const BASE_URL = 'https://pixabay.com/api/';
 
-export default class imageQuery {
+export default class ImageQuery {
     constructor() {
         this.searchQuery = '';
         this.page = 1;
     }
-    fetchImage() {
-        const url = `${BASE_URL}/key=${API_KEY}&q=${this.searchQuery}&image_type=photo&orientation=horizontal&safesearch=true&page=${this.page}&per_page=40`;
-        return axios
-            .get(url)
-            .then(response => {
-                console.log(response);  
+    async fetchImage() {
+        
+        const url = `${BASE_URL}?key=${API_KEY}&q=${this.searchQuery}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${this.page}`;
+        return await axios.get(url)
+            .then(function (response) {
                 this.incrementPage();
-                const data = response.data;
-                return data;
+                return response.data;
             })
-            // .then(data => {
-            //     this.incrementPage()
-            //     const data = response.data
-            //     return data;
-            // })
             .catch(error => console.log(error));
     }
 
@@ -39,6 +32,6 @@ export default class imageQuery {
         }
 
         set query(newQuery){
-            this.searchQuery = newQuery
+            this.searchQuery = newQuery;
         }
 }
