@@ -1,7 +1,7 @@
 import Notiflix from 'notiflix';
 import ImageQuery from './service_image';
-import SimpleLightbox from "simplelightbox";
-import "simplelightbox/dist/simple-lightbox.min.css";
+// import SimpleLightbox from "simplelightbox";
+// import "simplelightbox/dist/simple-lightbox.min.css";
 
 
 const searchForm = document.querySelector('#search-form');
@@ -17,14 +17,17 @@ loadMoreBtn.addEventListener('click', onload);
  async function onSearch(evt) {
     evt.preventDefaul();
 
-  newQuery.query = evt.currentTarget.elements.searchQuery.value;
-     newImage.resetPage();
+     newQuery.query = evt.currentTarget.elements.searchQuery.value;
+     
+
      await newImage.fetchImage().then(data => console.log(data));
      
-    if (!imageQuery) {
+    if (!imageQuery.query) {
         Notiflix.Notify.failure('Empty query. Please input something for search.' )
-        return
-    }
+        return;
+     }
+      newImage.resetPage();
+     clearGallery()
 }
 
 function onload() {
