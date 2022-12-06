@@ -1,7 +1,6 @@
 import ImagesApiService from './service_image';
-import LoadMoreBtn from './load-more';
-// import '../sass/index.scss';
 import Notiflix from 'notiflix';
+import LoadMoreBtn from './load-more';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
@@ -25,11 +24,11 @@ loadMoreBtn.refs.button.addEventListener('click', fetchImages);
 function onSearch(e) {
     e.preventDefault();
 
-    imagesApiService.query = e.currentTarget.elements.searchQuery.value;
+    imagesApiService.query = e.currentTarget.elements.searchQuery.value.trim();
 
     if (!imagesApiService.query) {
         Notiflix.Notify.failure(
-            'Search box cannot be empty. Please enter the word.'
+            'Sorry, there are no images matching your search query. Please try again.'
         );
         return;
     }
@@ -43,7 +42,7 @@ function onSearch(e) {
     refs.form.reset();
 }
 
-function fetchImages() {
+ function fetchImages() {
     loadMoreBtn.disable();
     imagesApiService.fetchImages().then(({ totalHits, hits }) => {
         if (hitsLength > totalHits) {
@@ -61,11 +60,10 @@ function fetchImages() {
             Notiflix.Notify.success(`Hooray! We found ${hitsLength} images.`);
 
             renderImagesCards(hits);
-            // scrollImagesCards();
+      
 
             const lightbox = new SimpleLightbox('.gallery a', {
-                captionsData: 'alt',
-                captionDelay: 250,
+                captionDelay: 1000,
             });
 
             lightbox.refresh();
@@ -101,14 +99,5 @@ function clearGalleryContainer() {
     refs.galleryContainer.innerHTML = '';
 }
 
-// function scrollImagesCards() {
-//     const { height: cardHeight } =
-//         refs.galleryContainer.firstElementChild.getBoundingClientRect();
-
-//     window.scrollBy({
-//         top: cardHeight * 2,
-//         behavior: 'smooth',
-//     });
-// }
 
 
